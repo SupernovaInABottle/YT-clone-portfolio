@@ -16,9 +16,84 @@ a {
     color: var(--white-text);
 }
 
+/* search container and submit button */
+
 .search-container {
     display: flex;
+    justify-content: center;
     align-items: center;
+    max-width: 500px;
+    margin: 20px auto;
+    border: 2px solid var(--gray-border);
+    border-radius: 24px;
+    overflow: hidden;
+}
+
+.search-input {
+    flex-grow: 1;
+    border: none;
+    padding: 10px 16px;
+    font-size: 16px;
+    outline: none;
+    background: transparent;
+    color: white;
+}
+
+.submit-btn {
+    background-color: transparent;
+    color: white;
+    border: 2px solid var(--gray-border);
+    border-top: none;
+    border-bottom: none;
+    padding: 11px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Radio Button set */
+
+.ch-vid-btn-container {
+    display: flex;
+    gap: 15px;
+    padding: 12px;
+    align-items: center;
+}
+
+.change-to-channel-btn input[type='radio'] {
+    opacity: 0;
+    position: absolute;
+    width: 0;
+    height: 0;
+}
+
+.change-to-video-btn input[type='radio'] {
+    opacity: 0;
+    position: absolute;
+    width: 0;
+    height: 0;
+}
+
+.change-to-channel-btn {
+    cursor: pointer;
+    display: block;
+}
+
+.radio-content {
+    text-align: center;
+    transition: all 0.2s ease-in-out;
+}
+
+.change-to-video-btn {
+    cursor: pointer;
+    display: block;
+}
+
+/* in channel tab buttons */
+
+.tab-container {
+    display: flex;
+    justify-content: center;
 }
 
 /* src result channels */
