@@ -32,7 +32,7 @@ a {
 .search-input {
     flex-grow: 1;
     border: none;
-    padding: 10px 16px;
+    padding: 9px 14px;
     font-size: 16px;
     outline: none;
     background: transparent;
@@ -45,7 +45,7 @@ a {
     border: 2px solid var(--gray-border);
     border-top: none;
     border-bottom: none;
-    padding: 11px 24px;
+    padding: 9px 24px;
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
@@ -57,36 +57,56 @@ a {
     display: flex;
     gap: 15px;
     padding: 12px;
-    align-items: center;
 }
 
 .change-to-channel-btn input[type='radio'] {
-    opacity: 0;
-    position: absolute;
-    width: 0;
-    height: 0;
+    display: none;
 }
 
 .change-to-video-btn input[type='radio'] {
-    opacity: 0;
-    position: absolute;
-    width: 0;
-    height: 0;
+    display: none;
 }
 
 .change-to-channel-btn {
-    cursor: pointer;
     display: block;
+    flex: 1;
+    cursor: pointer;
 }
 
-.radio-content {
-    text-align: center;
-    transition: all 0.2s ease-in-out;
+.change-to-channel-btn {
+    display: block;
+    flex: 1;
+    cursor: pointer;
 }
 
 .change-to-video-btn {
-    cursor: pointer;
     display: block;
+    flex: 1;
+    cursor: pointer;
+}
+
+.radio-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 3px;
+    border-radius: 8px;
+    transition: all 0.2s ease-in-out;
+}
+
+.radio-content:hover {
+    background-color: rgb(146, 146, 146);
+    color: rgb(0, 0, 0)
+}
+
+.change-to-video-btn input[type="radio"]:checked + .radio-content {
+    background-color: rgb(146, 146, 146);
+    color: black
+}
+
+.change-to-channel-btn input[type="radio"]:checked + .radio-content {
+    background-color: rgb(146, 146, 146);
+    color: black
 }
 
 /* in channel tab buttons */
@@ -94,6 +114,40 @@ a {
 .tab-container {
     display: flex;
     justify-content: center;
+}
+
+.video-tab {
+    background: none;
+    border: 2px solid var(--gray-border);
+    border-top: none;
+    border-right: none;
+    border-bottom-left-radius: 15px;
+    padding: 12px 24px;
+    outline: none;
+    font: inherit;
+    cursor: pointer;
+}
+
+.stream-tab {
+    background: none;
+    border: 2px solid var(--gray-border);
+    border-top: none;
+    border-left: 2px solid var(--gray-border);
+    border-bottom-right-radius: 15px;
+    padding: 12px 24px;
+    outline: none;
+    font: inherit;
+    cursor: pointer;
+}
+
+.video-tab:hover {
+    background: linear-gradient(to top, var(--gray-border), transparent);
+    color: black
+}
+
+.stream-tab:hover {
+    background: linear-gradient(to top, var(--gray-border), transparent);
+    color: black
 }
 
 /* src result channels */
@@ -209,41 +263,26 @@ a {
 
 /* channel video info */
 .ch-video-grid-container {
-    margin-left: 77px;
-    margin-right: 40px;
+    text-align: center; 
+    margin-top: 20px;
 }
 
 .ch-grid {
-    display: inline-flex;
-    margin-left: 20px;
-    margin-top: 70px;
-    border: 1px solid var(--gray-border);
+    display: inline-block;
+    margin-top: 20px;
+    border: 2px solid var(--gray-border);
+    padding: 13px;
     border-radius: 15px;
     outline-offset: 10px;
 }
 
-.video-thumb-container {
-    gap: 10px;
-}
-
 .video-title {
-    width: 300px;
+    max-width: 300px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.video-spacing {
     margin-top: 10px;
-    overflow-wrap: break-word;
-}
-
-.video-date {
-    margin-top: 10px;
-}
-
-.view-count {
-    margin-top: 10px;
-}
-
-.stream-tab {
-    background-color: var(--background-color);
-}
-
-.video-tab {
-    background-color: var(--background-color);
 }
