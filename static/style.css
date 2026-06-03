@@ -189,10 +189,11 @@ a {
 
 /* src result videos */
 .video-container {
-    margin-bottom: 10px;
     display: flex;
     -webkit-flex-direction: row;
     flex-direction: row;
+    max-width: 800px;
+    margin-bottom: 10px;
 }
 
 .video-info-container {
@@ -201,6 +202,10 @@ a {
     display: flex;
     flex-direction: column;
     background-color: transparent;
+}
+
+.video-url-thumbnail-container {
+    margin-right: 10px;
 }
 
 .video-thumbnail {

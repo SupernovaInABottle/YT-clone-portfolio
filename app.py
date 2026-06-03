@@ -81,6 +81,7 @@ def results():
 
         search_channel_data_request = youtube.search().list(
             part='snippet',
+            hl='pt_BR',
             q=user_search,
             type='channel',
             maxResults=10
@@ -124,6 +125,7 @@ def results():
     else:
         relevant_video_request = youtube.search().list(
             part='snippet',
+            hl='pt_BR',
             q=user_search,
             type='video',
             pageToken=next_page_token,
@@ -154,18 +156,25 @@ def results():
             id=videoid
         )
 
-        video_view_count_response = video_view_count_request.execute()
+        duration_request = youtube.videos().list(
+            part='contentDetails',
+            id=videoid
+        )
 
+        video_view_count_response = video_view_count_request.execute()
         video_data_response = video_data_request.execute()
+        duration_response = duration_request.execute()
+
         # Retrieves the video title, date published, and thumbnail respectively
         title = video_data_response['items'][0]['snippet']['title']
         date_published = parse_date(video_data_response['items'][0]['snippet']['publishedAt'])
         thumbnails = video_data_response['items'][0]['snippet']['thumbnails']
         thumbnail_url = thumbnails.get('medium')['url']
         video_view_count = format_big_numbers(video_view_count_response['items'][0]['statistics']['viewCount'])
+        video_duration = convert_duration(duration_response['items'][0]['contentDetails']['duration'])
 
         row = []
-        row.extend([videoid, thumbnail_url, title, date_published, video_view_count])
+        row.extend([videoid, thumbnail_url, title, date_published, video_view_count, video_duration])
         video_matrix.append(row)
 
     return render_template('results.html', video_matrix=video_matrix)
