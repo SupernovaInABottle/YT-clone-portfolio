@@ -4,11 +4,12 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-        <title>Pesquisa</title>
+        <title>Home</title>
     </head>
 
     <body>
 
+        <!-- search bar two radio buttons to change from showing only videos to showing only channels based on what was searched -->
         <form action="{{ url_for('results') }}" method="POST" class="search-container">
             <input type='text' name='search' id="search" class='search-input' placeholder="Pesquisar" required></input>
 
@@ -27,7 +28,7 @@
                 </label>
             </div>
         </form>
-
+    
         <div class="category-container">
             <a href="{{ url_for('home', cat_id=cat_automoveis) }}">
                 <button class="category-btn">Automóveis</button>
@@ -81,7 +82,9 @@
             {% endfor %}
         </div>
 
+
         <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
         <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     </body>
+
 </html>

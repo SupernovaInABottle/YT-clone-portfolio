@@ -42,13 +42,145 @@ def convert_duration(iso_duration):
         minutes=float(duration.time.minutes),
         seconds=float(duration.time.seconds)
     )
-
     return td
 
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    return render_template('index.html')
+
+    video_list = []
+    video_matrix = []
+
+    video_matrix.clear()
+
+    category_request = youtube.videoCategories().list(
+        part='snippet',
+        regionCode='BR',
+        hl='pt_BR'
+    )
+
+    category_response = category_request.execute()
+
+    # Lista contendo 9 categorias mais populares na minha opiniao
+    cat_desenhos = category_response['items'][18]['id']
+    cat_automoveis = category_response['items'][1]['id']
+    cat_musica = category_response['items'][2]['id']
+    cat_animais = category_response['items'][3]['id']
+    cat_esportes = category_response['items'][4]['id']
+    cat_jogos = category_response['items'][7]['id']
+    cat_comedia = category_response['items'][10]['id']
+    cat_ciencia = category_response['items'][16]['id']
+    cat_noticias = category_response['items'][13]['id']
+
+    video_category_request = youtube.videos().list(
+        part='snippet',
+        chart='mostPopular',
+        videoCategoryId=cat_noticias,
+        regionCode='BR',
+        maxResults=10
+    )
+
+    video_category_response = video_category_request.execute()
+
+    for item in video_category_response['items']:
+        video_list.append(item['id'])
+
+    for video_id in video_list:
+        video_data_request = youtube.videos().list(
+            part='snippet',
+            id=video_id
+        )
+
+        video_view_count_request = youtube.videos().list(
+            part='statistics',
+            id=video_id
+        )
+
+        duration_request = youtube.videos().list(
+            part='contentDetails',
+            id=video_id
+        )
+
+        video_view_count_response = video_view_count_request.execute()
+        video_data_response = video_data_request.execute()
+        duration_response = duration_request.execute()
+
+        # Retrieves the video title, date published, and thumbnail respectively
+        title = video_data_response['items'][0]['snippet']['title']
+        date_published = parse_date(video_data_response['items'][0]['snippet']['publishedAt'])
+        thumbnails = video_data_response['items'][0]['snippet']['thumbnails']
+        thumbnail_url = thumbnails.get('medium')['url']
+        video_view_count = format_big_numbers(video_view_count_response['items'][0]['statistics']['viewCount'])
+        video_duration = convert_duration(duration_response['items'][0]['contentDetails']['duration'])
+
+        row = []
+        row.extend([video_id, thumbnail_url, title, date_published, video_view_count, video_duration])
+        video_matrix.append(row)
+
+
+    return render_template('index.html', cat_desenhos=cat_desenhos,
+                           cat_automoveis=cat_automoveis,
+                           cat_musica=cat_musica, cat_animais=cat_animais,
+                           cat_esportes=cat_esportes,
+                           cat_jogos=cat_jogos, cat_comedia=cat_comedia,
+                           cat_ciencia=cat_ciencia, cat_noticias=cat_noticias,
+                           video_matrix=video_matrix)
+
+
+@app.route('/<cat_id>/home', methods=['GET', 'POST'])
+def home(cat_id):
+
+    video_list = []
+    video_matrix = []
+
+    video_matrix.clear()
+
+    video_category_request = youtube.videos().list(
+        part='snippet',
+        chart='mostPopular',
+        videoCategoryId=cat_id,
+        regionCode='BR',
+        maxResults=10
+    )
+
+    video_category_response = video_category_request.execute()
+
+    for item in video_category_response['items']:
+        video_list.append(item['id'])
+
+    for video_id in video_list:
+        video_data_request = youtube.videos().list(
+            part='snippet',
+            id=video_id
+        )
+
+        video_view_count_request = youtube.videos().list(
+            part='statistics',
+            id=video_id
+        )
+
+        duration_request = youtube.videos().list(
+            part='contentDetails',
+            id=video_id
+        )
+
+        video_view_count_response = video_view_count_request.execute()
+        video_data_response = video_data_request.execute()
+        duration_response = duration_request.execute()
+
+        # Retrieves the video title, date published, and thumbnail respectively
+        title = video_data_response['items'][0]['snippet']['title']
+        date_published = parse_date(video_data_response['items'][0]['snippet']['publishedAt'])
+        thumbnails = video_data_response['items'][0]['snippet']['thumbnails']
+        thumbnail_url = thumbnails.get('medium')['url']
+        video_view_count = format_big_numbers(video_view_count_response['items'][0]['statistics']['viewCount'])
+        video_duration = convert_duration(duration_response['items'][0]['contentDetails']['duration'])
+
+        row = []
+        row.extend([video_id, thumbnail_url, title, date_published, video_view_count, video_duration])
+        video_matrix.append(row)
+
+    return render_template('home.html', video_matrix=video_matrix)
 
 
 @app.route('/results', methods=['GET', 'POST'])
@@ -81,7 +213,7 @@ def results():
 
         search_channel_data_request = youtube.search().list(
             part='snippet',
-            hl='pt_BR',
+            relevanceLanguage='pt_BR',
             q=user_search,
             type='channel',
             maxResults=10
@@ -125,7 +257,7 @@ def results():
     else:
         relevant_video_request = youtube.search().list(
             part='snippet',
-            hl='pt_BR',
+            relevanceLanguage='pt_BR',
             q=user_search,
             type='video',
             pageToken=next_page_token,
