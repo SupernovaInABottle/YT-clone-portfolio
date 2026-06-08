@@ -61,15 +61,13 @@ def index():
 
     category_response = category_request.execute()
 
-    # Lista contendo 9 categorias mais populares na minha opiniao
-    cat_desenhos = category_response['items'][18]['id']
+    # Lista contendo 7 categorias
     cat_automoveis = category_response['items'][1]['id']
     cat_musica = category_response['items'][2]['id']
     cat_animais = category_response['items'][3]['id']
     cat_esportes = category_response['items'][4]['id']
     cat_jogos = category_response['items'][7]['id']
     cat_comedia = category_response['items'][10]['id']
-    cat_ciencia = category_response['items'][16]['id']
     cat_noticias = category_response['items'][13]['id']
 
     video_category_request = youtube.videos().list(
@@ -118,12 +116,11 @@ def index():
         video_matrix.append(row)
 
 
-    return render_template('index.html', cat_desenhos=cat_desenhos,
-                           cat_automoveis=cat_automoveis,
+    return render_template('home.html', cat_automoveis=cat_automoveis,
                            cat_musica=cat_musica, cat_animais=cat_animais,
                            cat_esportes=cat_esportes,
                            cat_jogos=cat_jogos, cat_comedia=cat_comedia,
-                           cat_ciencia=cat_ciencia, cat_noticias=cat_noticias,
+                           cat_noticias=cat_noticias,
                            video_matrix=video_matrix)
 
 
@@ -134,6 +131,23 @@ def home(cat_id):
     video_matrix = []
 
     video_matrix.clear()
+
+    category_request = youtube.videoCategories().list(
+        part='snippet',
+        regionCode='BR',
+        hl='pt_BR'
+    )
+
+    category_response = category_request.execute()
+
+    # Lista contendo 7 categorias
+    cat_automoveis = category_response['items'][1]['id']
+    cat_musica = category_response['items'][2]['id']
+    cat_animais = category_response['items'][3]['id']
+    cat_esportes = category_response['items'][4]['id']
+    cat_jogos = category_response['items'][7]['id']
+    cat_comedia = category_response['items'][10]['id']
+    cat_noticias = category_response['items'][13]['id']
 
     video_category_request = youtube.videos().list(
         part='snippet',
@@ -180,7 +194,12 @@ def home(cat_id):
         row.extend([video_id, thumbnail_url, title, date_published, video_view_count, video_duration])
         video_matrix.append(row)
 
-    return render_template('home.html', video_matrix=video_matrix)
+    return render_template('home.html', cat_automoveis=cat_automoveis,
+                           cat_musica=cat_musica, cat_animais=cat_animais,
+                           cat_esportes=cat_esportes,
+                           cat_jogos=cat_jogos, cat_comedia=cat_comedia,
+                           cat_noticias=cat_noticias,
+                           video_matrix=video_matrix)
 
 
 @app.route('/results', methods=['GET', 'POST'])
@@ -269,8 +288,7 @@ def results():
 
         # If the video is not a short add it to the list
         for item in relevant_video_response['items']:
-            if not is_short(item['id']['videoId']):
-                videos_and_shorts.append(item['id']['videoId'])
+            videos_and_shorts.append(item['id']['videoId'])
 
         next_page_token = relevant_video_response.get('nextPageToken')
         if not next_page_token:
@@ -488,8 +506,6 @@ def streams(ch_id):
             
             elif scheduled_start_time and not actual_start_time:
                 up_broadcasts.append(content_response['items'][0]['id'])
-
-    print(up_broadcasts)
 
     # Retrieves data for upcoming broadcasts
     for content_id in up_broadcasts:

@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-        <title>Pesquisa</title>
+        <title>Search</title>
     </head>
 
     <body>
@@ -29,35 +29,18 @@
         </form>
 
         <div class="category-container">
-            <a href="{{ url_for('home', cat_id=cat_automoveis) }}">
-                <button class="category-btn">Automóveis</button>
-            </a>
-            <a href="{{ url_for('home', cat_id=cat_musica) }}">
-                <button class="category-btn">Música</button>
-            </a>
-            <a href="{{ url_for('home', cat_id=cat_animais) }}">
-                <button class="category-btn">Animaiss</button>
-            </a>
-            <a href="{{ url_for('home', cat_id=cat_esportes) }}">
-                <button class="category-btn">Esportes</button>
-            </a>
-            <a href="{{ url_for('home', cat_id=cat_jogos) }}">
-                <button class="category-btn">Jogos</button>
-            </a>
-            <a href="{{ url_for('home', cat_id=cat_comedia) }}">
-                <button class="category-btn">Comédia</button>
-            </a>
-            <a href="{{ url_for('home', cat_id=cat_ciencia) }}">
-                <button class="category-btn">Ciência e tecnologia</button>
-            </a>
-            <a href="{{ url_for('home', cat_id=cat_noticias) }}">
-                <button class="category-btn">Notícias e política</button>
-            </a>
+            <a href="{{ url_for('home', cat_id=cat_automoveis) }}" class="default-text first-category-btn">Automóveis</a>
+            <a href="{{ url_for('home', cat_id=cat_musica) }}" class="default-text category-btn">Música</a>
+            <a href="{{ url_for('home', cat_id=cat_animais) }}" class="default-text category-btn">Animais</a>
+            <a href="{{ url_for('home', cat_id=cat_esportes) }}" class="default-text category-btn">Esportes</a>
+            <a href="{{ url_for('home', cat_id=cat_jogos) }}" class="default-text category-btn">Jogos</a>
+            <a href="{{ url_for('home', cat_id=cat_comedia) }}" class="default-text category-btn">Comédia</a>
+            <a href="{{ url_for('home', cat_id=cat_noticias) }}" class="default-text last-category-btn">Notícias e política</a>
         </div>
     
-        <div class="video-src-results">
+        <div class="ch-video-grid-container">
             {% for row in video_matrix %}
-                <div class="video-container">
+                <div class="ch-grid">
                     <div class="video-url-thumbnail-container">
                         <!--video hyperlink plus thumbnail-->
                         <a href="http://www.youtube.com/embed/{{ row[0] }}">

@@ -16,8 +16,9 @@ a {
     color: var(--white-text);
 }
 
-/* search container and submit button */
 
+
+/* search container and submit button */
 .search-container {
     display: flex;
     justify-content: center;
@@ -51,8 +52,83 @@ a {
     cursor: pointer;
 }
 
-/* Radio Button set */
 
+
+/* category buttons */
+.category-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    height: 100%;
+    transform: translate(-10px);
+}
+
+.first-category-btn {
+    box-sizing: border-box;
+    width: 75%;
+    display: block;
+    padding: 16px;
+    border-top: none;
+    border-bottom: 2px solid var(--gray-border);
+}
+
+.last-category-btn {
+    box-sizing: border-box;
+    width: 75%;
+    display: block;
+    padding: 16px;
+    border-bottom: none;
+    text-decoration: none;
+    background: none;
+}
+
+.category-btn {
+    box-sizing: border-box;
+    width: 75%;
+    display: block;
+    padding: 16px;
+    text-decoration: none;
+    background: none;
+    border-bottom: 2px solid var(--gray-border);
+}
+
+.category-btn:hover {
+  background-color: var(--gray-border);
+  color: white;
+}
+
+.first-category-btn:hover {
+  background-color: var(--gray-border);
+  color: white;
+}
+
+.last-category-btn:hover {
+  background-color: var(--gray-border);
+  color: white;
+}
+
+@media screen and (max-width: 700px) {
+  .category-container {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+  .category-container a {float: left;}
+  div.content {margin-left: 0;}
+}
+
+@media screen and (max-width: 400px) {
+  .category-container a {
+    text-align: center;
+    float: none;
+  }
+}
+
+
+
+
+/* Radio Button set */
 .ch-vid-btn-container {
     display: flex;
     gap: 15px;
@@ -109,8 +185,9 @@ a {
     color: black
 }
 
-/* in channel tab buttons */
 
+
+/* in channel tab buttons */
 .tab-container {
     display: flex;
     justify-content: center;
@@ -150,6 +227,8 @@ a {
     color: black
 }
 
+
+
 /* src result channels */
 .ch-src-results {
     margin-left: 50px;
@@ -187,53 +266,34 @@ a {
     object-fit: cover;
 }
 
+
+
 /* src result videos */
-.video-container {
-    max-width: 500px;
-    display: flex;
-    -webkit-flex-direction: row;
-    flex-direction: row;
-    margin-bottom: 10px;
-}
 
 .video-info-container {
-    max-width: 500px;
     display: flex;
     flex-direction: column;
     background-color: transparent;
-}
-
-.video-url-thumbnail-container {
-    margin-right: 10px;
 }
 
 .video-thumbnail {
     border-radius: 15px;
 }
 
-.video-src-results {
-    margin-top: 50px;
-    display: flex;
-    flex-direction: column; 
-    align-items: center;    
-    justify-content: center;
-    transform: translateX(-100px);
+.video-title {
+    transform: translate(10px);
+    max-width: 300px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.src-result-video-title {
+.video-date, .video-duration, .video-view-count{
     margin-top: 10px;
-    margin-left: 10px;
+    transform: translate(10px);
 }
 
-.src-result-video-date {
-    margin-top: 10px;
-    margin-left: 10px;
-}
 
-.src-result-video-view-count {
-    margin-top: 10px;
-    margin-left: 10px;
-}
 
 /* channel header info */
 .ch-page-header {
@@ -269,6 +329,8 @@ a {
     flex-direction: row;
 }
 
+
+
 /* channel video info */
 .ch-video-grid-container {
     text-align: center; 
@@ -282,15 +344,4 @@ a {
     padding: 13px;
     border-radius: 15px;
     outline-offset: 10px;
-}
-
-.video-title {
-    max-width: 500px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.video-spacing {
-    margin-top: 10px;
 }

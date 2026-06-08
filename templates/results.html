@@ -56,11 +56,20 @@
             {% endfor %}
         </div>
         
+        <div class="category-container">
+            <a href="{{ url_for('home', cat_id=cat_automoveis) }}" class="default-text first-category-btn">Automóveis</a>
+            <a href="{{ url_for('home', cat_id=cat_musica) }}" class="default-text category-btn">Música</a>
+            <a href="{{ url_for('home', cat_id=cat_animais) }}" class="default-text category-btn">Animais</a>
+            <a href="{{ url_for('home', cat_id=cat_esportes) }}" class="default-text category-btn">Esportes</a>
+            <a href="{{ url_for('home', cat_id=cat_jogos) }}" class="default-text category-btn">Jogos</a>
+            <a href="{{ url_for('home', cat_id=cat_comedia) }}" class="default-text category-btn">Comédia</a>
+            <a href="{{ url_for('home', cat_id=cat_noticias) }}" class="default-text last-category-btn">Notícias e política</a>
+        </div>
 
         <!--Videos searched-->
-        <div class="video-src-results">
+        <div class="ch-video-grid-container">
             {% for row in video_matrix %}
-                <div class="video-container">
+                <div class="ch-grid">
                     <div class="video-url-thumbnail-container">
                         <!--video hyperlink plus thumbnail-->
                         <a href="http://www.youtube.com/embed/{{ row[0] }}">
