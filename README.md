@@ -1,4 +1,4 @@
-(Update: Barra de pesquisa, botoes, e videos estilizados)
+(Update: Botoes de categoria implementados, amanha os estilizarei)
 
 Uma cópia do YouTube para meu portfólio (não finalizado). Um projeto para mostrar minhas abilidades, e para aprender sobre APIs.
 
