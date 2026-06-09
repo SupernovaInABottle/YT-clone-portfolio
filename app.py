@@ -75,7 +75,7 @@ def index():
         chart='mostPopular',
         videoCategoryId=cat_noticias,
         regionCode='BR',
-        maxResults=10
+        maxResults=12
     )
 
     video_category_response = video_category_request.execute()
@@ -154,7 +154,7 @@ def home(cat_id):
         chart='mostPopular',
         videoCategoryId=cat_id,
         regionCode='BR',
-        maxResults=10
+        maxResults=12
     )
 
     video_category_response = video_category_request.execute()
@@ -204,6 +204,24 @@ def home(cat_id):
 
 @app.route('/results', methods=['GET', 'POST'])
 def results():
+
+    category_request = youtube.videoCategories().list(
+        part='snippet',
+        regionCode='BR',
+        hl='pt_BR'
+    )
+
+    category_response = category_request.execute()
+
+    # Lista contendo 7 categorias
+    cat_automoveis = category_response['items'][1]['id']
+    cat_musica = category_response['items'][2]['id']
+    cat_animais = category_response['items'][3]['id']
+    cat_esportes = category_response['items'][4]['id']
+    cat_jogos = category_response['items'][7]['id']
+    cat_comedia = category_response['items'][10]['id']
+    cat_noticias = category_response['items'][13]['id']
+
     user_search = request.form.get('search')
 
     # Contains multiple rows each with a channel id, sub count, title, 
@@ -235,7 +253,7 @@ def results():
             relevanceLanguage='pt_BR',
             q=user_search,
             type='channel',
-            maxResults=10
+            maxResults=12
         )        
 
         search_channel_data_response = search_channel_data_request.execute()
@@ -270,7 +288,11 @@ def results():
             row.extend([channel_id, format_big_numbers(channel_subscriber_count), channel_title, ch_avatar_url])
             channel_matrix.append(row)
 
-        return render_template('results.html', channel_matrix=channel_matrix)
+        return render_template('results.html', cat_automoveis=cat_automoveis,
+                           cat_musica=cat_musica, cat_animais=cat_animais,
+                           cat_esportes=cat_esportes, cat_jogos=cat_jogos, 
+                           cat_comedia=cat_comedia, cat_noticias=cat_noticias, 
+                           channel_matrix=channel_matrix)
     
 # Video request area
     else:
@@ -281,7 +303,7 @@ def results():
             type='video',
             pageToken=next_page_token,
             order='relevance',
-            maxResults=10
+            maxResults=12
         )
 
         relevant_video_response = relevant_video_request.execute()
@@ -327,11 +349,32 @@ def results():
         row.extend([videoid, thumbnail_url, title, date_published, video_view_count, video_duration])
         video_matrix.append(row)
 
-    return render_template('results.html', video_matrix=video_matrix)
+    return render_template('results.html', cat_automoveis=cat_automoveis,
+                           cat_musica=cat_musica, cat_animais=cat_animais,
+                           cat_esportes=cat_esportes, cat_jogos=cat_jogos, 
+                           cat_comedia=cat_comedia, cat_noticias=cat_noticias, 
+                           video_matrix=video_matrix)
 
 
 @app.route('/<ch_id>/videos', methods=['GET', 'POST'])
 def videos(ch_id):
+
+    category_request = youtube.videoCategories().list(
+        part='snippet',
+        regionCode='BR',
+        hl='pt_BR'
+    )
+
+    category_response = category_request.execute()
+
+    # Lista contendo 7 categorias
+    cat_automoveis = category_response['items'][1]['id']
+    cat_musica = category_response['items'][2]['id']
+    cat_animais = category_response['items'][3]['id']
+    cat_esportes = category_response['items'][4]['id']
+    cat_jogos = category_response['items'][7]['id']
+    cat_comedia = category_response['items'][10]['id']
+    cat_noticias = category_response['items'][13]['id']
 
     next_page_token = None
 
@@ -368,7 +411,7 @@ def videos(ch_id):
         channelId=ch_id,
         type='video',
         order='date',
-        maxResults=10,
+        maxResults=12,
         pageToken=next_page_token
     )
     ch_content_response = ch_content_request.execute()
@@ -424,7 +467,11 @@ def videos(ch_id):
         row.extend([content_id, video_title, date_published, thumbnail_url, video_view_count, video_duration])
         ch_video_matrix.append(row)
 
-    return render_template('videos.html', ch_id=ch_id, channel_title=channel_title,
+    return render_template('videos.html', cat_automoveis=cat_automoveis,
+                           cat_musica=cat_musica, cat_animais=cat_animais,
+                           cat_esportes=cat_esportes, cat_jogos=cat_jogos, 
+                           cat_comedia=cat_comedia, cat_noticias=cat_noticias,
+                           ch_id=ch_id, channel_title=channel_title,
                            ch_thumbnail_url=ch_thumbnail_url,
                            ch_subscriber_count=format_big_numbers(ch_subscriber_count),
                            ch_custom_url=ch_custom_url, ch_video_matrix=ch_video_matrix)
@@ -432,6 +479,23 @@ def videos(ch_id):
 
 @app.route('/<ch_id>/Ao_Vivo', methods=['GET', 'POST'])
 def streams(ch_id):
+
+    category_request = youtube.videoCategories().list(
+        part='snippet',
+        regionCode='BR',
+        hl='pt_BR'
+    )
+
+    category_response = category_request.execute()
+
+    # Lista contendo 7 categorias
+    cat_automoveis = category_response['items'][1]['id']
+    cat_musica = category_response['items'][2]['id']
+    cat_animais = category_response['items'][3]['id']
+    cat_esportes = category_response['items'][4]['id']
+    cat_jogos = category_response['items'][7]['id']
+    cat_comedia = category_response['items'][10]['id']
+    cat_noticias = category_response['items'][13]['id']
 
     next_page_token = None
     # contains multiple rows of completed, upcoming, and currently live strems, each with information about completed and live broadcasts retrieved below
@@ -474,7 +538,7 @@ def streams(ch_id):
         channelId=ch_id,
         type='video',
         order='date',
-        maxResults=10,
+        maxResults=12,
         pageToken=next_page_token
     )
 
@@ -599,7 +663,11 @@ def streams(ch_id):
         row_live.extend([content_id, stream_title, date_published, thumbnail_url, stream_view_count])
         ch_live_matrix.append(row_live)
 
-    return render_template('streams.html', ch_id=ch_id, channel_title=channel_title,
+    return render_template('streams.html', cat_automoveis=cat_automoveis,
+                           cat_musica=cat_musica, cat_animais=cat_animais,
+                           cat_esportes=cat_esportes, cat_jogos=cat_jogos, 
+                           cat_comedia=cat_comedia, cat_noticias=cat_noticias,
+                           ch_id=ch_id, channel_title=channel_title,
                            ch_thumbnail_url=ch_thumbnail_url,
                            ch_subscriber_count=format_big_numbers(ch_subscriber_count),
                            ch_custom_url=ch_custom_url, ch_ulive_matrix=ch_ulive_matrix,

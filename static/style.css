@@ -56,12 +56,10 @@ a {
 
 /* category buttons */
 .category-container {
-    position: relative;
+    position: fixed;
+    max-width: 150px;
     display: flex;
     flex-direction: column;
-    position: fixed;
-    height: 100%;
-    transform: translate(-10px);
 }
 
 .first-category-btn {
@@ -335,6 +333,7 @@ a {
 .ch-video-grid-container {
     text-align: center; 
     margin-top: 20px;
+    margin-left: 10%;
 }
 
 .ch-grid {
