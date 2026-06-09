@@ -1,4 +1,4 @@
-(Update: Botoes de categoria implementados e estilizados)
+(Update: Botoes de categoria nao funcionando na maioria das paginas arrumado, botoes de categoria em cima dos outros elementos arrumado)
 
 Uma cópia do YouTube para meu portfólio (não finalizado). Um projeto para mostrar minhas abilidades, e para aprender sobre APIs.
 
