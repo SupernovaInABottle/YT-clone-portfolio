@@ -1,5 +1,5 @@
-(Update: Botoes de categoria nao funcionando na maioria das paginas arrumado, botoes de categoria em cima dos outros elementos arrumado)
-(Nao finalizado)
+(Update: Visuais dos botoes de categoria melhorado e fundacao da pagina de assistir videos)
+(Projeto nao finalizado)
 
 Um projeto usando youtube api para criar um website parecido com o youtube para meu portfolio.
 
