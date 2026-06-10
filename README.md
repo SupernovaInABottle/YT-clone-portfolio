@@ -4,7 +4,7 @@
 
 > É possivel pesquisar videos, canais, e caso voce esteja em um canal voce pode checar as transmissoes. A data de videos e transmissoes agendadas sao diferentes.
 
-[link do projeto](https://yt-clone-portfolio.onrender.com)
+[link do website](https://yt-clone-portfolio.onrender.com)
 
 Do lado da barra de pesquisa tem dois botões, um para mostrar só videos e o outro para mostrar só canais. O botão de video estara sempre checado a não ser que o botão de canais seja clicado.
 
