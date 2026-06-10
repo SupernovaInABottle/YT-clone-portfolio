@@ -1,24 +1,24 @@
+# Um projeto usando youtube api para criar um website parecido com o youtube para meu portfolio. (Projeto nao finalizado)
+
 (Update: Visuais dos botoes de categoria melhorado e fundacao da pagina de assistir videos)
-(Projeto nao finalizado)
 
-Um projeto usando youtube api para criar um website parecido com o youtube para meu portfolio.
+> É possivel pesquisar videos, canais, e caso voce esteja em um canal voce pode checar as transmissoes. A data de videos e transmissoes agendadas sao diferentes.
 
-link: https://yt-clone-portfolio.onrender.com
+[link do projeto](https://yt-clone-portfolio.onrender.com)
 
 Do lado da barra de pesquisa tem dois botões, um para mostrar só videos e o outro para mostrar só canais. O botão de video estara sempre checado a não ser que o botão de canais seja clicado.
 
 <img width="468" height="65" alt="image" src="https://github.com/user-attachments/assets/68550ca7-71bb-4906-89ca-a12c78593bab" />
 
-Ao abrir o website isso sera a primeira coisa a aparecer
-<img width="1730" height="789" alt="image" src="https://github.com/user-attachments/assets/4a21ec67-7820-452c-ae2a-f0630925c3b5" />
+Se voce clique no link voce sera redirecionado a pagina abaixo.
+<img width="1870" height="969" alt="image" src="https://github.com/user-attachments/assets/c04252a5-f053-4a8a-8bcc-d1b213e76cee" />
 
-Caso algo seja pesquisado na barra você pode esperar o resultado abaixo.
-<img width="1730" height="787" alt="image" src="https://github.com/user-attachments/assets/fce11ec5-d0b1-40a2-92ba-18dabf498862" />
+Ao pesquisar videos voce sera redirecionado a pagina abaixo.
+<img width="1872" height="979" alt="image" src="https://github.com/user-attachments/assets/380f28ec-cbf6-4943-b54a-926e98038b37" />
 
+Ao pesquisar canais voce sera redirecionado a pagina abaixo.
+<img width="1869" height="972" alt="image" src="https://github.com/user-attachments/assets/45bd0255-9784-4fab-8108-b79bffe373bc" />
 
-Caso o botão de canais seja selecionado e algo é pesquisado o resultado abaixo é o esperado.
-<img width="1878" height="734" alt="image" src="https://github.com/user-attachments/assets/8ada99de-9d62-493e-9bb3-a5598d69aeaa" />
-
-Caso um canal seja clicado o usuario sera redirecionada para a página abaixo.
-<img width="1733" height="788" alt="image" src="https://github.com/user-attachments/assets/c1ea2b78-4a99-462f-b832-92f0e7c49e09" />
+Se voce clicar em um canal voce sera redirecionado a pagina abaixo.
+<img width="1865" height="969" alt="image" src="https://github.com/user-attachments/assets/20518074-e91c-4e2b-b61a-32258f02e826" />
 
