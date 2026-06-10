@@ -70,6 +70,7 @@
         <!--Videos searched-->
         <div class="ch-video-grid-container">
             {% for row in video_matrix %}
+            <a href="{{ url_for('watch', vid_id=row[0], title=row[2], duration=row[5], date=row[3], view_ocunt=row[4]) }}">
                 <div class="ch-grid">
                     <div class="video-url-thumbnail-container">
                         <!--video hyperlink plus thumbnail-->
@@ -91,6 +92,7 @@
                         </a>
                     </div>
                 </div>
+            </a>    
             {% endfor %}
         </div>
 

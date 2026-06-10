@@ -8,12 +8,11 @@ a {
 
 :root {
   --background-color: rgb(30, 30, 30);
-  --white-text: #ffffff;
   --gray-border: rgb(54, 54, 54);
 }
 
 .default-text {
-    color: var(--white-text);
+    color: #ffffff;
 }
 
 
@@ -21,9 +20,9 @@ a {
 /* search container and submit button */
 .search-container {
     display: flex;
+    width: fit-content;
     justify-content: center;
     align-items: center;
-    max-width: 500px;
     margin: 20px auto;
     border: 2px solid var(--gray-border);
     border-radius: 24px;
@@ -56,38 +55,36 @@ a {
 
 /* category buttons */
 .category-container {
+    min-height: 100dvh;
+    justify-content: center;
+    align-items: center;
+    left: 0%;
+    top: 0%;
     position: fixed;
-    max-width: 150px;
     display: flex;
     flex-direction: column;
+    background-color: rgb(21, 21, 21);
 }
 
-.first-category-btn {
+.c-btn {    
     box-sizing: border-box;
     width: 75%;
     display: block;
     padding: 16px;
+}
+
+.first-category-btn {
     border-top: none;
     border-bottom: 2px solid var(--gray-border);
 }
 
 .last-category-btn {
-    box-sizing: border-box;
-    width: 75%;
-    display: block;
-    padding: 16px;
     border-bottom: none;
     text-decoration: none;
     background: none;
 }
 
 .category-btn {
-    box-sizing: border-box;
-    width: 75%;
-    display: block;
-    padding: 16px;
-    text-decoration: none;
-    background: none;
     border-bottom: 2px solid var(--gray-border);
 }
 
@@ -229,7 +226,7 @@ a {
 
 /* src result channels */
 .ch-src-results {
-    margin-left: 50px;
+    margin-left: 10%;
     margin-top: 50px;
 }
 

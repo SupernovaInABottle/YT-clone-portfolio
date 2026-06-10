@@ -356,7 +356,7 @@ def results():
                            video_matrix=video_matrix)
 
 
-@app.route('/<ch_id>/videos', methods=['GET', 'POST'])
+@app.route('/videos/<ch_id>', methods=['GET', 'POST'])
 def videos(ch_id):
 
     category_request = youtube.videoCategories().list(
@@ -477,7 +477,7 @@ def videos(ch_id):
                            ch_custom_url=ch_custom_url, ch_video_matrix=ch_video_matrix)
 
 
-@app.route('/<ch_id>/Ao_Vivo', methods=['GET', 'POST'])
+@app.route('/Ao_Vivo/<ch_id>', methods=['GET', 'POST'])
 def streams(ch_id):
 
     category_request = youtube.videoCategories().list(
@@ -674,6 +674,35 @@ def streams(ch_id):
                            ch_clive_matrix=ch_clive_matrix, ch_live_matrix=ch_live_matrix)
 
 
+
+@app.route('/watch/<vid_id>', methods=['GET', 'POST'])
+def watch(vid_id, title, duration, date, view_ocunt):
+
+    category_request = youtube.videoCategories().list(
+        part='snippet',
+        regionCode='BR',
+        hl='pt_BR'
+    )
+
+    category_response = category_request.execute()
+
+    # Lista contendo 7 categorias
+    cat_automoveis = category_response['items'][1]['id']
+    cat_musica = category_response['items'][2]['id']
+    cat_animais = category_response['items'][3]['id']
+    cat_esportes = category_response['items'][4]['id']
+    cat_jogos = category_response['items'][7]['id']
+    cat_comedia = category_response['items'][10]['id']
+    cat_noticias = category_response['items'][13]['id']
+
+
+
+    return render_template('watch.html', cat_automoveis=cat_automoveis,
+                           cat_musica=cat_musica, cat_animais=cat_animais,
+                           cat_esportes=cat_esportes, cat_jogos=cat_jogos, 
+                           cat_comedia=cat_comedia, cat_noticias=cat_noticias,
+                           vid_id=vid_id, title=title, duration=duration, date=date,
+                           view_ocunt=view_ocunt)
 
 
 if __name__ == '__main__':
