@@ -676,7 +676,7 @@ def streams(ch_id):
 
 
 @app.route('/watch/<vid_id>', methods=['GET', 'POST'])
-def watch(vid_id, title, duration, date, view_ocunt):
+def watch(vid_id):
 
     category_request = youtube.videoCategories().list(
         part='snippet',
@@ -696,13 +696,37 @@ def watch(vid_id, title, duration, date, view_ocunt):
     cat_noticias = category_response['items'][13]['id']
 
 
+    video_data_request = youtube.videos().list(
+        part='snippet',
+        id=vid_id
+    )
+
+    video_view_count_request = youtube.videos().list(
+        part='statistics',
+        id=vid_id
+    )
+
+    duration_request = youtube.videos().list(
+        part='contentDetails',
+        id=vid_id
+    )
+
+    duration_response = duration_request.execute()
+    video_view_count_response = video_view_count_request.execute()
+    video_data_response = video_data_request.execute()
+
+    # Retrieves the video id, title, date published, duration, and thumbnail respectively
+    video_title = video_data_response['items'][0]['snippet']['title']
+    date_published = parse_date(video_data_response['items'][0]['snippet']['publishedAt'])
+    video_view_count = format_big_numbers(video_view_count_response['items'][0]['statistics']['viewCount'])
+
 
     return render_template('watch.html', cat_automoveis=cat_automoveis,
                            cat_musica=cat_musica, cat_animais=cat_animais,
                            cat_esportes=cat_esportes, cat_jogos=cat_jogos, 
                            cat_comedia=cat_comedia, cat_noticias=cat_noticias,
-                           vid_id=vid_id, title=title, duration=duration, date=date,
-                           view_ocunt=view_ocunt)
+                           vid_id=vid_id, video_title=video_title, date_published=date_published,
+                           video_view_count=video_view_count)
 
 
 if __name__ == '__main__':

@@ -341,3 +341,20 @@ a {
     border-radius: 15px;
     outline-offset: 10px;
 }
+
+
+
+/* embeded video */
+.parent-iframe-container {
+    text-align: center; 
+}
+
+.iframe-container {
+    display: inline-block;
+    height: 1695;
+    width: 627;
+}
+
+.video-spacing {
+    margin-top: 1%;
+}

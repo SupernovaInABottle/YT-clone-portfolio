@@ -3,12 +3,61 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Assistir</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        <title>{{ video_title }}</title>
     </head>
-    
     <body>
-        
-        <p>toure here</p>
+
+        <!-- search bar two radio buttons to change from showing only videos to showing only channels based on what was searched -->
+        <form action="{{ url_for('results') }}" method="POST" class="search-container">
+            <input type='text' name='search' id="search" class='search-input' placeholder="Pesquisar" required></input>
+
+            <button class='submit-btn' type="submit">
+                <span class="submit-btn-icon"><ion-icon name="search-outline"></ion-icon></span>
+            </button>
+
+            <div class="ch-vid-btn-container">
+                <label class="default-text change-to-channel-btn">
+                    <input type="radio" name='change-btn' value="channel-btn">
+                    <div class="radio-content">Canais</div>
+                </label>
+                <label class="default-text change-to-video-btn">
+                    <input type='radio' name="change-btn" value="vidoe-btn" checked>
+                    <div class="radio-content">Videos</div>
+                </label>
+            </div>
+        </form>
+
+        <div class="category-container">
+            <a href="{{ url_for('home', cat_id=cat_automoveis) }}" class="default-text c-btn first-category-btn">Automóveis</a>
+            <a href="{{ url_for('home', cat_id=cat_musica) }}" class="default-text c-btn category-btn">Música</a>
+            <a href="{{ url_for('home', cat_id=cat_animais) }}" class="default-text c-btn category-btn">Animais</a>
+            <a href="{{ url_for('home', cat_id=cat_esportes) }}" class="default-text c-btn category-btn">Esportes</a>
+            <a href="{{ url_for('home', cat_id=cat_jogos) }}" class="default-text c-btn category-btn">Jogos</a>
+            <a href="{{ url_for('home', cat_id=cat_comedia) }}" class="default-text c-btn category-btn">Comédia</a>
+            <a href="{{ url_for('home', cat_id=cat_noticias) }}" class="default-text c-btn last-category-btn">Notícias e política</a>
+        </div>
+
+        <div class="parent-iframe-container">
+            <div class="iframe-container">
+                <iframe
+                    width="1104" 
+                    height="621" 
+                    src="https://www.youtube.com/embed/{{ vid_id }}" 
+                    title="{{ video_title }}" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    referrerpolicy="strict-origin-when-cross-origin" 
+                    allowfullscreen>
+                </iframe>
+                <div class="watch-video-info">
+                    <!--channel videos title, date published, and view count-->
+                    <div class="default-text video-spacing">{{ video_title }}</div>
+                    <div class="default-text video-spacing">{{ date_published }}</div>
+                    <div class="default-text video-spacing">{{ video_view_count }} visualizações</div>
+                </div>
+            </div>
+        </div>
 
     </body>
 </html>
