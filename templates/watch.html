@@ -38,7 +38,7 @@
             <a href="{{ url_for('home', cat_id=cat_noticias) }}" class="default-text c-btn last-category-btn">Notícias e política</a>
         </div>
 
-        <div class="parent-iframe-container">
+        <div class="parent-watch-video-container">
             <div class="iframe-container">
                 <iframe
                     width="1104" 
@@ -50,14 +50,23 @@
                     referrerpolicy="strict-origin-when-cross-origin" 
                     allowfullscreen>
                 </iframe>
+
                 <div class="watch-video-info">
                     <!--channel videos title, date published, and view count-->
-                    <div class="default-text video-spacing">{{ video_title }}</div>
-                    <div class="default-text video-spacing">{{ date_published }}</div>
-                    <div class="default-text video-spacing">{{ video_view_count }} visualizações</div>
+                    <div class="default-text video-spacing watch-title">{{ video_title }}</div>
+
+                    <div class="info-container">
+                        <div class="default-text video-spacing">{{ video_view_count }} visualizações</div>
+                        <div class="default-text video-spacing">{{ date_published }}</div>
+                        <div class="default-text description">{{ video_description }}</div>
+                    </div>    
+
                 </div>
             </div>
         </div>
 
+
+        <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+        <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     </body>
 </html>
