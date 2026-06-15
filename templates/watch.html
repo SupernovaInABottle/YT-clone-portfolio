@@ -55,6 +55,24 @@
                     <!--channel videos title, date published, and view count-->
                     <div class="default-text video-spacing watch-title">{{ video_title }}</div>
 
+                    <br>
+
+                    <div class="default-text watch-ch-container">
+                        <!--video hyperlink plus thumbnail-->
+                        <a href="{{ url_for('videos', ch_id=channel_id) }}" class="default-text watch-ch-a">
+
+                            <img class='watch-small-ch-avatar'
+                                src="{{ ch_avatar_url }}" 
+                                title="{{ channel_title }}"
+                                alt="{{ channel_title }}"
+                                loading="lazy">
+                            
+                            <div class="watch-ch-title-containe">
+                                {{ channel_title }}
+                            </div>
+                        </a>
+                    </div>
+
                     <div class="info-container">
                         <div class="default-text video-spacing">{{ video_view_count }} visualizações</div>
                         <div class="default-text video-spacing">{{ date_published }}</div>

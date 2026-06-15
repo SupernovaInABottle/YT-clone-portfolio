@@ -695,7 +695,6 @@ def watch(vid_id):
     cat_comedia = category_response['items'][10]['id']
     cat_noticias = category_response['items'][13]['id']
 
-
     video_data_request = youtube.videos().list(
         part='snippet',
         id=vid_id
@@ -710,10 +709,23 @@ def watch(vid_id):
     video_data_response = video_data_request.execute()
 
     # Retrieves the video id, title, date published, duration, and thumbnail respectively
+    channel_id = video_data_response['items'][0]['snippet']['channelId']
+    channel_title = video_data_response['items'][0]['snippet']['channelTitle']
     video_title = video_data_response['items'][0]['snippet']['title']
     video_description = video_data_response['items'][0]['snippet']['description']
     date_published = parse_date(video_data_response['items'][0]['snippet']['publishedAt'])
     video_view_count = format_big_numbers(video_view_count_response['items'][0]['statistics']['viewCount'])
+
+
+    ch_data_request = youtube.channels().list(
+        part='snippet',
+        id=channel_id
+    )
+
+    ch_data_response = ch_data_request.execute()
+
+    get_thumbnails = ch_data_response['items'][0]['snippet']['thumbnails']
+    ch_avatar_url = get_thumbnails.get('medium')['url']
 
 
     return render_template('watch.html', cat_automoveis=cat_automoveis,
@@ -721,7 +733,9 @@ def watch(vid_id):
                            cat_esportes=cat_esportes, cat_jogos=cat_jogos, 
                            cat_comedia=cat_comedia, cat_noticias=cat_noticias,
                            vid_id=vid_id, video_title=video_title, date_published=date_published,
-                           video_view_count=video_view_count, video_description=video_description)
+                           video_view_count=video_view_count, video_description=video_description,
+                           channel_id=channel_id, channel_title=channel_title,
+                           ch_avatar_url=ch_avatar_url)
 
 
 if __name__ == '__main__':
