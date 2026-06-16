@@ -717,14 +717,22 @@ def watch(vid_id):
     video_view_count = format_big_numbers(video_view_count_response['items'][0]['statistics']['viewCount'])
 
 
-    ch_data_request = youtube.channels().list(
+    watch_ch_data_request = youtube.channels().list(
         part='snippet',
         id=channel_id
     )
 
-    ch_data_response = ch_data_request.execute()
+    watch_ch_sub_count_request = youtube.channels().list(
+        part='statistics',
+        id=channel_id
+    )
 
-    get_thumbnails = ch_data_response['items'][0]['snippet']['thumbnails']
+    watch_ch_data_response = watch_ch_data_request.execute()
+    watch_ch_sub_count_response = watch_ch_sub_count_request.execute()
+
+
+    sub_count = format_big_numbers(watch_ch_sub_count_response['items'][0]['statistics']['subscriberCount'])
+    get_thumbnails = watch_ch_data_response['items'][0]['snippet']['thumbnails']
     ch_avatar_url = get_thumbnails.get('medium')['url']
 
 
@@ -735,7 +743,7 @@ def watch(vid_id):
                            vid_id=vid_id, video_title=video_title, date_published=date_published,
                            video_view_count=video_view_count, video_description=video_description,
                            channel_id=channel_id, channel_title=channel_title,
-                           ch_avatar_url=ch_avatar_url)
+                           ch_avatar_url=ch_avatar_url, sub_count=sub_count)
 
 
 if __name__ == '__main__':

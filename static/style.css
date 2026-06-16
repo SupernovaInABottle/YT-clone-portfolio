@@ -344,7 +344,7 @@ a {
 
 
 
-/* embeded video */
+/* watch page */
 .parent-watch-video-container {
     text-align: center;
     justify-content: center;
@@ -393,4 +393,10 @@ a {
     height: 50px;
     width: 50px;
     border-radius: 50%;
+}
+
+.watch-ch-info-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
