@@ -1,6 +1,6 @@
 # Um projeto usando youtube api para criar um website parecido com o youtube para meu portfolio. (Projeto nao finalizado)
 
-(Update: Botao do canal com avatar e link clicavel implementado)
+(Update: Quantidade de inscritos adicionado a pagina de assistir)
 
 > É possivel pesquisar videos, canais, e caso voce esteja em um canal voce pode checar os videos, e transmissoes desse canal.
 
@@ -23,4 +23,5 @@ Se voce clicar em um canal voce sera redirecionado a pagina abaixo.
 <img width="1865" height="969" alt="image" src="https://github.com/user-attachments/assets/20518074-e91c-4e2b-b61a-32258f02e826" />
 
 A pagina de assistir videos parece assim.
-<img width="1764" height="981" alt="image" src="https://github.com/user-attachments/assets/b82d38bd-1abc-4893-883d-2c11aab7147b" />
+<img width="1865" height="975" alt="image" src="https://github.com/user-attachments/assets/5613a7ee-0e9d-4807-a30e-950bebf17d10" />
+
