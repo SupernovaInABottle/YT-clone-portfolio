@@ -1,6 +1,7 @@
 # Um projeto usando youtube api para criar um website parecido com o youtube para meu portfolio. (Projeto nao finalizado)
 
 (Update: Mudancas ao codigo backend permitindo mais resultados sem aumentar muito a quota do API do YouTube)
+
 (proxima coisa a adicionar: Botoes, e logica de paginacao)
 
 > É possivel pesquisar videos, canais, e caso voce esteja em um canal voce pode checar os videos, e transmissoes desse canal.
