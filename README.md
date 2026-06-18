@@ -1,6 +1,8 @@
 # Um projeto usando youtube api para criar um website parecido com o youtube para meu portfolio. (Projeto nao finalizado)
 
-(Update: Quantidade de inscritos adicionado a pagina de assistir)
+(Update: Mudancas ao codigo backend permitindo mais resultados sem aumentar muito a quota do API do YouTube)
+
+(proxima coisa a adicionar: Botoes, e logica de paginacao)
 
 > É possivel pesquisar videos, canais, e caso voce esteja em um canal voce pode checar os videos, e transmissoes desse canal.
 
@@ -10,7 +12,7 @@ Do lado da barra de pesquisa tem dois botões, um para mostrar só videos e o ou
 
 <img width="468" height="65" alt="image" src="https://github.com/user-attachments/assets/68550ca7-71bb-4906-89ca-a12c78593bab" />
 
-Se voce clique no link voce sera redirecionado a pagina abaixo.
+A pagina principal se parece assim.
 <img width="1870" height="969" alt="image" src="https://github.com/user-attachments/assets/c04252a5-f053-4a8a-8bcc-d1b213e76cee" />
 
 Ao pesquisar videos voce sera redirecionado a pagina abaixo.
@@ -19,7 +21,7 @@ Ao pesquisar videos voce sera redirecionado a pagina abaixo.
 Ao pesquisar canais voce sera redirecionado a pagina abaixo.
 <img width="1869" height="972" alt="image" src="https://github.com/user-attachments/assets/45bd0255-9784-4fab-8108-b79bffe373bc" />
 
-Se voce clicar em um canal voce sera redirecionado a pagina abaixo.
+A pagina de canal se parece assim.
 <img width="1865" height="969" alt="image" src="https://github.com/user-attachments/assets/20518074-e91c-4e2b-b61a-32258f02e826" />
 
 A pagina de assistir videos parece assim.
