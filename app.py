@@ -18,11 +18,30 @@ def is_short(video_id):
     return response.status_code == 200
 
 
+def video_metadata(video_id):
+    VIDEO_URL = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+
+    response = requests.get(
+        VIDEO_URL,
+        headers={
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+            "Accept-Language": "en-US,en;q=0.9",
+        },
+    )
+
+    match = re.search(r"var ytInitialPlayerResponse\s*=\s*({.+?});\s*var", response.text, re.DOTALL)
+    data = json.loads(match.group(1))
+    details = data["videoDetails"]
+
+    vid_title = details["title"]      # video title
+    view_count = details["viewCount"] # view count as string
+    ch_name = details["author"]       # channel name
+
+    return vid_title, view_count, ch_name
+
+
+
 def format_big_numbers(count):
-
-    if int(count):
-        count = int(count)
-
     count = int(count)
     if count >= 1_000_000:
         return f"{count / 1_000_000:.1f}M"
@@ -36,15 +55,18 @@ def parse_date(date):
     past_date = arrow.get(date)
     return past_date.humanize(locale='pt-br')
 
-def convert_duration(seconds):
+def convert_duration(iso_duration):
+    
+    duration = parse_duration(iso_duration)
 
-    seconds = int(seconds)
+    # Convert the duration to a timedelta object
+    td = timedelta(
+        hours=float(duration.time.hours),
+        minutes=float(duration.time.minutes),
+        seconds=float(duration.time.seconds)
+    )
+    return td
 
-    hours, remainder = divmod(seconds, 3600)
-    minutes, secs = divmod(remainder, 60)
-    time_string = f"{hours:02d}:{minutes:02d}:{secs:02d}" 
-
-    return time_string
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -76,7 +98,7 @@ def index():
         chart='mostPopular',
         videoCategoryId=cat_noticias,
         regionCode='BR',
-        maxResults=24
+        maxResults=12
     )
 
     video_category_response = video_category_request.execute()
@@ -90,32 +112,30 @@ def index():
             id=video_id
         )
 
-        video_data_response = video_data_request.execute()
-
-        VIDEO_URL = f'https://www.youtube.com/watch?v={video_id}'
-
-        response = requests.get(
-            VIDEO_URL,
-            headers={
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
-                "Accept-Language": "en-US,en;q=0.9",
-            },
+        video_view_count_request = youtube.videos().list(
+            part='statistics',
+            id=video_id
         )
 
-        match = re.search(r"var ytInitialPlayerResponse\s*=\s*({.+?});\s*var", response.text, re.DOTALL)
-        data = json.loads(match.group(1))
-        details = data["videoDetails"]
+        duration_request = youtube.videos().list(
+            part='contentDetails',
+            id=video_id
+        )
 
-        vid_title = details["title"]                                # video title
-        view_count = details["viewCount"]                           # view count as string
-        thumbnail = details["thumbnail"]['thumbnails'][3]['url']    # video thumbnail
-        duration = details['lengthSeconds']                        # video thumbnail
+        video_view_count_response = video_view_count_request.execute()
+        video_data_response = video_data_request.execute()
+        duration_response = duration_request.execute()
 
         # Retrieves the video title, date published, and thumbnail respectively
+        title = video_data_response['items'][0]['snippet']['title']
         date_published = parse_date(video_data_response['items'][0]['snippet']['publishedAt'])
+        thumbnails = video_data_response['items'][0]['snippet']['thumbnails']
+        thumbnail_url = thumbnails.get('medium')['url']
+        video_view_count = format_big_numbers(video_view_count_response['items'][0]['statistics']['viewCount'])
+        video_duration = convert_duration(duration_response['items'][0]['contentDetails']['duration'])
 
         row = []
-        row.extend([video_id, thumbnail, vid_title, date_published, view_count, duration])
+        row.extend([video_id, thumbnail_url, title, date_published, video_view_count, video_duration])
         video_matrix.append(row)
 
 
@@ -157,7 +177,7 @@ def home(cat_id):
         chart='mostPopular',
         videoCategoryId=cat_id,
         regionCode='BR',
-        maxResults=24
+        maxResults=12
     )
 
     video_category_response = video_category_request.execute()
@@ -171,32 +191,30 @@ def home(cat_id):
             id=video_id
         )
 
-        video_data_response = video_data_request.execute()
-
-        VIDEO_URL = f'https://www.youtube.com/watch?v={video_id}'
-
-        response = requests.get(
-            VIDEO_URL,
-            headers={
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
-                "Accept-Language": "en-US,en;q=0.9",
-            },
+        video_view_count_request = youtube.videos().list(
+            part='statistics',
+            id=video_id
         )
 
-        match = re.search(r"var ytInitialPlayerResponse\s*=\s*({.+?});\s*var", response.text, re.DOTALL)
-        data = json.loads(match.group(1))
-        details = data["videoDetails"]
+        duration_request = youtube.videos().list(
+            part='contentDetails',
+            id=video_id
+        )
 
-        vid_title = details["title"]                                # video title
-        view_count = details["viewCount"]                           # view count as string
-        thumbnail = details["thumbnail"]['thumbnails'][3]['url']    # video thumbnail
-        duration = convert_duration(details['lengthSeconds'])       # video duration
+        video_view_count_response = video_view_count_request.execute()
+        video_data_response = video_data_request.execute()
+        duration_response = duration_request.execute()
 
         # Retrieves the video title, date published, and thumbnail respectively
+        title = video_data_response['items'][0]['snippet']['title']
         date_published = parse_date(video_data_response['items'][0]['snippet']['publishedAt'])
+        thumbnails = video_data_response['items'][0]['snippet']['thumbnails']
+        thumbnail_url = thumbnails.get('medium')['url']
+        video_view_count = format_big_numbers(video_view_count_response['items'][0]['statistics']['viewCount'])
+        video_duration = convert_duration(duration_response['items'][0]['contentDetails']['duration'])
 
         row = []
-        row.extend([video_id, thumbnail, vid_title, date_published, view_count, duration])
+        row.extend([video_id, thumbnail_url, title, date_published, video_view_count, video_duration])
         video_matrix.append(row)
 
     return render_template('home.html', cat_automoveis=cat_automoveis,
@@ -279,10 +297,14 @@ def results():
             
             channel_data_response = channel_data_request.execute()
             channel_subscriber_response = channel_subscriber_request.execute()
+            
             channel_title = channel_data_response['items'][0]['snippet']['title']
+
             get_thumbnails = channel_data_response['items'][0]['snippet']['thumbnails']
             ch_avatar_url = get_thumbnails.get('medium')['url']
+
             channel_subscriber_count = channel_subscriber_response['items'][0]['statistics']['subscriberCount']
+
             channel_id = channel_subscriber_response['items'][0]['id']
 
             row = []
@@ -304,7 +326,7 @@ def results():
             type='video',
             pageToken=next_page_token,
             order='relevance',
-            maxResults=24
+            maxResults=12
         )
 
         relevant_video_response = relevant_video_request.execute()
@@ -324,32 +346,30 @@ def results():
             id=videoid
         )
 
-        video_data_response = video_data_request.execute()
-        VIDEO_URL = f'https://www.youtube.com/watch?v={videoid}'
-
-        response = requests.get(
-            VIDEO_URL,
-            headers={
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
-                "Accept-Language": "en-US,en;q=0.9",
-            },
+        video_view_count_request = youtube.videos().list(
+            part='statistics',
+            id=videoid
         )
 
-        match = re.search(r"var ytInitialPlayerResponse\s*=\s*({.+?});\s*var", response.text, re.DOTALL)
-        data = json.loads(match.group(1))
-        details = data["videoDetails"]
+        duration_request = youtube.videos().list(
+            part='contentDetails',
+            id=videoid
+        )
 
-        vid_title = details["title"]                                # video title
-        view_count = format_big_numbers(details["viewCount"])       # view count as string
-        ch_id = details["channelId"]                                # channel id
-        thumbnail = details["thumbnail"]['thumbnails'][3]['url']    # video thumbnail
-        duration = convert_duration(details['lengthSeconds'])       # video duration
+        video_view_count_response = video_view_count_request.execute()
+        video_data_response = video_data_request.execute()
+        duration_response = duration_request.execute()
 
-        # Retrieves the date published
+        # Retrieves the video title, date published, and thumbnail respectively
+        title = video_data_response['items'][0]['snippet']['title']
         date_published = parse_date(video_data_response['items'][0]['snippet']['publishedAt'])
+        thumbnails = video_data_response['items'][0]['snippet']['thumbnails']
+        thumbnail_url = thumbnails.get('medium')['url']
+        video_view_count = format_big_numbers(video_view_count_response['items'][0]['statistics']['viewCount'])
+        video_duration = convert_duration(duration_response['items'][0]['contentDetails']['duration'])
 
         row = []
-        row.extend([videoid, thumbnail, vid_title, date_published, view_count, duration])
+        row.extend([videoid, thumbnail_url, title, date_published, video_view_count, video_duration])
         video_matrix.append(row)
 
     return render_template('results.html', cat_automoveis=cat_automoveis,
@@ -414,7 +434,7 @@ def videos(ch_id):
         channelId=ch_id,
         type='video',
         order='date',
-        maxResults=25,
+        maxResults=12,
         pageToken=next_page_token
     )
     ch_content_response = ch_content_request.execute()
@@ -438,38 +458,37 @@ def videos(ch_id):
         if not scheduled_start_time: 
             videos_and_shorts.append(video_id)
 
-    for video_id in videos_and_shorts:
+    for content_id in videos_and_shorts:
         video_data_request = youtube.videos().list(
             part='snippet',
-            id=video_id
+            id=content_id
         )
 
+        video_view_count_request = youtube.videos().list(
+            part='statistics',
+            id=content_id
+        )
+
+        duration_request = youtube.videos().list(
+            part='contentDetails',
+            id=content_id
+        )
+
+        duration_response = duration_request.execute()
+        video_view_count_response = video_view_count_request.execute()
         video_data_response = video_data_request.execute()
 
-        VIDEO_URL = f'https://www.youtube.com/watch?v={video_id}'
-
-        response = requests.get(
-            VIDEO_URL,
-            headers={
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
-                "Accept-Language": "en-US,en;q=0.9",
-            },
-        )
-
-        match = re.search(r"var ytInitialPlayerResponse\s*=\s*({.+?});\s*var", response.text, re.DOTALL)
-        data = json.loads(match.group(1))
-        details = data["videoDetails"]
-
-        vid_title = details["title"]                                                           # video title
-        view_count = format_big_numbers(details["viewCount"])                                  # view count as string
-        thumbnail = details["thumbnail"]['thumbnails'][3]['url']                               # video thumbnail
-        duration = convert_duration(details['lengthSeconds'])                                  # video duration 
-        date_published = parse_date(video_data_response['items'][0]['snippet']['publishedAt']) # date published
+        # Retrieves the video id, title, date published, duration, and thumbnail respectively
+        video_title = video_data_response['items'][0]['snippet']['title']
+        date_published = parse_date(video_data_response['items'][0]['snippet']['publishedAt'])
+        vid_thumbnails_get = video_data_response['items'][0]['snippet']['thumbnails']
+        thumbnail_url = vid_thumbnails_get.get('medium')['url']
+        video_view_count = format_big_numbers(video_view_count_response['items'][0]['statistics']['viewCount'])
+        video_duration = convert_duration(duration_response['items'][0]['contentDetails']['duration'])
 
         row = []
-        row.extend([video_id, vid_title, date_published, thumbnail, view_count, duration])
+        row.extend([content_id, video_title, date_published, thumbnail_url, video_view_count, video_duration])
         ch_video_matrix.append(row)
-
 
     return render_template('videos.html', cat_automoveis=cat_automoveis,
                            cat_musica=cat_musica, cat_animais=cat_animais,
@@ -704,44 +723,36 @@ def watch(vid_id):
         id=vid_id
     )
 
-    video_data_response = video_data_request.execute()
-    
-    VIDEO_URL = f'https://www.youtube.com/watch?v={vid_id}'
-
-    response = requests.get(
-        VIDEO_URL,
-        headers={
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
-            "Accept-Language": "en-US,en;q=0.9",
-        },
+    video_view_count_request = youtube.videos().list(
+        part='statistics',
+        id=vid_id
     )
 
-    match = re.search(r"var ytInitialPlayerResponse\s*=\s*({.+?});\s*var", response.text, re.DOTALL)
-    data = json.loads(match.group(1))
-    details = data["videoDetails"]
-
-    ch_name = details["author"]                                 # channel name
-    ch_id = details["channelId"]                                # channel id
-    vid_description = details["shortDescription"]               # video description
-    vid_title = details["title"]                                # video title
-    view_count = format_big_numbers(details["viewCount"])       # view count as string
+    video_view_count_response = video_view_count_request.execute()
+    video_data_response = video_data_request.execute()
 
     # Retrieves the video id, title, date published, duration, and thumbnail respectively
+    channel_id = video_data_response['items'][0]['snippet']['channelId']
+    channel_title = video_data_response['items'][0]['snippet']['channelTitle']
+    video_title = video_data_response['items'][0]['snippet']['title']
+    video_description = video_data_response['items'][0]['snippet']['description']
     date_published = parse_date(video_data_response['items'][0]['snippet']['publishedAt'])
+    video_view_count = format_big_numbers(video_view_count_response['items'][0]['statistics']['viewCount'])
 
 
     watch_ch_data_request = youtube.channels().list(
         part='snippet',
-        id=ch_id
+        id=channel_id
     )
 
     watch_ch_sub_count_request = youtube.channels().list(
         part='statistics',
-        id=ch_id
+        id=channel_id
     )
 
     watch_ch_data_response = watch_ch_data_request.execute()
     watch_ch_sub_count_response = watch_ch_sub_count_request.execute()
+
 
     sub_count = format_big_numbers(watch_ch_sub_count_response['items'][0]['statistics']['subscriberCount'])
     get_thumbnails = watch_ch_data_response['items'][0]['snippet']['thumbnails']
@@ -752,9 +763,9 @@ def watch(vid_id):
                            cat_musica=cat_musica, cat_animais=cat_animais,
                            cat_esportes=cat_esportes, cat_jogos=cat_jogos, 
                            cat_comedia=cat_comedia, cat_noticias=cat_noticias,
-                           vid_id=vid_id, video_title=vid_title, date_published=date_published,
-                           video_view_count=view_count, video_description=vid_description,
-                           channel_id=ch_id, channel_title=ch_name,
+                           vid_id=vid_id, video_title=video_title, date_published=date_published,
+                           video_view_count=video_view_count, video_description=video_description,
+                           channel_id=channel_id, channel_title=channel_title,
                            ch_avatar_url=ch_avatar_url, sub_count=sub_count)
 
 
