@@ -1,6 +1,6 @@
 # Um projeto usando youtube api para criar um website parecido com o youtube para meu portfolio. (Projeto nao finalizado)
 
-(Update: Inscritos adicionado a pagina de assistir)
+(Update: Inscritos adicionados a pagina de assistir)
 
 (proxima coisa a adicionar: Botoes, e logica de paginacao)
 
