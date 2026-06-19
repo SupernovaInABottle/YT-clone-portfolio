@@ -2,8 +2,6 @@
 
 (Update: Inscritos adicionados a pagina de assistir)
 
-(proxima coisa a adicionar: Botoes, e logica de paginacao)
-
 > É possivel pesquisar videos, canais, e caso voce esteja em um canal voce pode checar os videos, e transmissoes desse canal.
 
 [link do website](https://yt-clone-portfolio.onrender.com)
